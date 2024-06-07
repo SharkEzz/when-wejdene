@@ -48,4 +48,5 @@ jobs:
           --install
           --atomic
           --create-namespace
+          --set-string image.tag=latest
           --namespace when-wejdene when-wejdene helm
