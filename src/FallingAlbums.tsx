@@ -1,4 +1,4 @@
-import { Bodies, Engine, Render, Runner, World } from 'matter-js';
+import { Bodies, Engine, Render, Runner, World, Mouse, MouseConstraint } from 'matter-js';
 import { memo, useEffect, useRef, type MutableRefObject, type RefObject } from 'react';
 
 interface Props {
@@ -28,6 +28,10 @@ function FallingAlbumsComponent({ engineRef, buttonRef }: Props) {
         wireframes: false,
       },
     });
+
+    const mouse = Mouse.create(canvasRef.current);
+    const mouseConstraint = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.01, render: { visible: false } } });
+    World.add(engine.world, mouseConstraint);
 
     const buttonPos = buttonRef.current.getBoundingClientRect();
 

@@ -57,7 +57,7 @@ function App() {
         <p>{Math.floor(dateDiff / (1024 * 60 * 60))} heures</p>
         <p>{Math.floor(dateDiff / (1024 * 60))} minutes</p>
         <p>{Math.floor(dateDiff / 1024)} secondes</p>
-        <button ref={buttonRef} onClick={handleButtonClick} className="py-3 px-4 mt-4 bg-slate-700 rounded">
+        <button ref={buttonRef} onClick={handleButtonClick} className="py-3 px-4 mt-4 top-[60%] bg-slate-700 rounded absolute">
           Donne 😢
         </button>
       </div>
