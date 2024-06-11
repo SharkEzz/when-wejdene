@@ -64,7 +64,7 @@ function FallingAlbumsComponent({ engineRef, buttonRef }: Props) {
     };
   }, [buttonRef, engineRef]);
 
-  return <canvas className="absolute left-0 top-0 z-0 pointer-events-none" ref={canvasRef} />;
+  return <canvas className="absolute left-0 top-0 -z-0" ref={canvasRef} />;
 }
 
 export const FallingAlbums = memo(FallingAlbumsComponent);
