@@ -4,13 +4,14 @@ import { memo, useEffect, useRef, type MutableRefObject, type RefObject } from '
 interface Props {
   engineRef: MutableRefObject<Engine | undefined>;
   buttonRef: RefObject<HTMLButtonElement | undefined>;
+  isPast?: boolean;
 }
 
-function FallingAlbumsComponent({ engineRef, buttonRef }: Props) {
+function FallingAlbumsComponent({ engineRef, buttonRef, isPast = false }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (!canvasRef.current || !buttonRef.current) return;
+    if (!canvasRef.current) return;
 
     const engine = Engine.create();
     engineRef.current = engine;
@@ -30,25 +31,33 @@ function FallingAlbumsComponent({ engineRef, buttonRef }: Props) {
     });
 
     const mouse = Mouse.create(canvasRef.current);
-    const mouseConstraint = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.01, render: { visible: false } } });
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse,
+      constraint: { stiffness: 0.01, render: { visible: false } },
+    });
     World.add(engine.world, mouseConstraint);
 
-    const buttonPos = buttonRef.current.getBoundingClientRect();
-
-    World.add(engine.world, [
-      Bodies.rectangle(
-        buttonPos.x + buttonPos.width / 2,
-        buttonPos.y + buttonPos.height / 2,
-        buttonPos.width,
-        buttonPos.height,
-        { isStatic: true, render: { visible: false } },
-      ),
+    const buttonPos = buttonRef.current?.getBoundingClientRect();
+    const worldItems = [];
+    if (!isPast && buttonPos) {
+      worldItems.push(
+        Bodies.rectangle(
+          buttonPos.x + buttonPos.width / 2,
+          buttonPos.y + buttonPos.height / 2,
+          buttonPos.width,
+          buttonPos.height,
+          { isStatic: true, render: { visible: false } },
+        ),
+      );
+    }
+    worldItems.push(
       Bodies.rectangle(cw / 2, ch - 3, cw, 5, {
         isStatic: true,
         render: { visible: false },
       }),
-    ]);
+    );
 
+    World.add(engine.world, worldItems);
     Render.run(render);
 
     const runner = Runner.create();
@@ -62,7 +71,7 @@ function FallingAlbumsComponent({ engineRef, buttonRef }: Props) {
       World.clear(engine.world, false);
       Engine.clear(engine);
     };
-  }, [buttonRef, engineRef]);
+  }, [buttonRef, engineRef, isPast]);
 
   return <canvas className="absolute left-0 top-0 -z-0" ref={canvasRef} />;
 }
