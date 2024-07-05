@@ -18,6 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
+        rollme: {{ randAlphaNum 5 | quote }}
         {{- include "whenwejdene.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
