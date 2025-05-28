@@ -1,4 +1,4 @@
-import { Bodies, Common, Engine, World } from 'matter-js';
+import { Bodies, Common, type Engine, World } from 'matter-js';
 import { useEffect, useRef, useState } from 'react';
 import { FallingAlbums } from './FallingAlbums';
 
