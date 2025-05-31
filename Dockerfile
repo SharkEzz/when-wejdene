@@ -1,10 +1,10 @@
-FROM node:20-alpine as builder
+FROM node:22-alpine AS builder
 
 WORKDIR /build
 COPY . .
 
 RUN npm i -g pnpm && pnpm i && pnpm build
 
-FROM nginx:1.27-alpine as runner
+FROM nginx:1.28-alpine AS runner
 
 COPY --from=builder /build/dist /usr/share/nginx/html
