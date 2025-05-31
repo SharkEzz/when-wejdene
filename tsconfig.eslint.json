@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/tmp/tsconfig.eslint.tsbuildinfo",
+
+    /* Bundler mode */
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["src", "vite.config.ts", "eslint.config.js"]
+}

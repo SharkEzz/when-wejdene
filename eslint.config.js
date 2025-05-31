@@ -1,5 +1,3 @@
-// @ts-check
-
 import eslintjs from '@eslint/js';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -9,41 +7,64 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist', '.github', '.vscode', 'helm', 'public', 'node_modules'],
-    linterOptions: { reportUnusedDisableDirectives: true, reportUnusedInlineConfigs: 'error' },
+    ignores: ['.github', '.vscode', 'dist', 'helm', 'node_modules', 'public'],
   },
-  eslintjs.configs.recommended,
+  {
+    linterOptions: { reportUnusedDisableDirectives: 'error', reportUnusedInlineConfigs: 'error' },
+    rules: {
+      ...eslintjs.configs.recommended.rules,
+      'no-console': 'warn',
+    },
+  },
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
-  reactRefresh.configs.vite,
   {
     languageOptions: {
       sourceType: 'module',
       ecmaVersion: 'latest',
       globals: {
         ...globals.browser,
+        ...globals.es2024,
+        ...globals.node,
       },
       parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-        ecmaFeatures: {
-          jsx: true,
+        projectService: {
+          defaultProject: 'tsconfig.eslint.json',
         },
-      },
-    },
-  },
-  react.configs.flat.recommended,
-  react.configs.flat['jsx-runtime'],
-  reactHooks.configs['recommended-latest'],
-  {
-    settings: {
-      react: {
-        version: '19.1.0',
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
   {
     files: ['**/*.js'],
     ...tseslint.configs.disableTypeChecked,
+  },
+  {
+    files: ['**/*.{ts,tsx}'],
+    plugins: {
+      react,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...react.configs.flat.recommended?.rules,
+      ...react.configs.flat['jsx-runtime']?.rules,
+      ...reactHooks.configs.recommended.rules,
+      'react-hooks/react-compiler': 'error',
+      ...reactRefresh.configs.vite.rules,
+    },
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        jsxPragma: null,
+      },
+    },
+    settings: {
+      react: {
+        version: '19.1.0',
+      },
+    },
   },
 );
