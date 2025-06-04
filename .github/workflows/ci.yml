@@ -2,11 +2,11 @@ name: CI
 
 on:
   push:
-    #branches: [ "main" ]
-    branches: [ ]
+    branches: [ "main" ]
 
 jobs:
   build:
+    if: false
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,6 +29,7 @@ jobs:
           ghcr.io/sharkezz/when-wejdene:latest
 
   deploy:
+    if: false
     runs-on: ubuntu-latest
     needs: build
     environment: prod
