@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { DateDiff } from './DateDiff.tsx';
 import { FallingAlbums } from './FallingAlbums.tsx';
 
-function App() {
+function App(): React.JSX.Element {
   const engineRef = useRef<Engine>(Engine.create());
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [clickCount, setClickCount] = useState(0);

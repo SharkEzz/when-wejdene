@@ -1,3 +1,5 @@
+// @ts-check
+
 import eslintjs from '@eslint/js';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -7,7 +9,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['.github', '.vscode', 'dist', 'helm', 'node_modules', 'public'],
+    ignores: ['dist'],
   },
   eslintjs.configs.recommended,
   tseslint.configs.strictTypeChecked,
@@ -17,39 +19,42 @@ export default tseslint.config(
     rules: {
       'no-console': 'warn',
       'require-atomic-updates': 'warn',
+      '@typescript-eslint/consistent-type-exports': 'error',
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-unnecessary-type-conversion': 'error',
+      '@typescript-eslint/no-unnecessary-type-parameters': 'error',
+      '@typescript-eslint/no-unsafe-type-assertion': 'error',
+      '@typescript-eslint/promise-function-async': 'error',
+      '@typescript-eslint/strict-boolean-expressions': 'error',
     },
     languageOptions: {
       sourceType: 'module',
       ecmaVersion: 'latest',
       globals: {
+        ...globals.es2025,
         ...globals.browser,
-        ...globals.es2024,
       },
       parserOptions: {
-        projectService: {
-          defaultProject: 'tsconfig.eslint.json',
-        },
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
-  {
-    files: ['**/*.tsx'],
-    extends: [reactRefresh.configs.vite],
-  },
+  { files: ['**/*.js'], extends: [tseslint.configs.disableTypeChecked] },
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
       react.configs.flat['recommended'] ?? {},
       react.configs.flat['jsx-runtime'] ?? {},
       reactHooks.configs.recommended,
+      reactRefresh.configs.vite,
     ],
     rules: {
       'react-hooks/react-compiler': 'error',
     },
     settings: {
       react: {
-        version: '19.1.0',
+        version: '19.1',
       },
     },
   },

@@ -2,12 +2,13 @@ import { Bodies, type Body, Engine, Mouse, MouseConstraint, Render, Runner, Worl
 import type { RefCallback, RefObject } from 'react';
 import { checkIsPast } from './constants.ts';
 
-interface Props {
+export function FallingAlbums({
+  engineRef,
+  buttonRef,
+}: {
   engineRef: RefObject<Engine>;
   buttonRef: RefObject<HTMLButtonElement | null>;
-}
-
-export function FallingAlbums({ engineRef, buttonRef }: Props) {
+}): React.JSX.Element {
   const handleFallingAlbum: RefCallback<HTMLCanvasElement> = (canvas) => {
     if (!canvas) return;
 
